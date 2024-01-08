@@ -51,7 +51,9 @@ class ExpertPanelManager:
             logger.debug(fmted_prompt.content)
 
             # This assumes that the panelist has a work_memory attribute that is a ConversationBufferMemory object
-            panelist.work_memory.chat_memory.add_message(fmted_prompt)
+            panelist.panel_instructions.append(fmted_prompt)
+
+            panelist.welcome(self.panel_name, self.panel_description, self.panel_goals)
 
         
         communicator_prompt = SystemMessagePromptTemplate.from_template(communicator_greeting_prompt)
@@ -61,6 +63,10 @@ class ExpertPanelManager:
             'expert_title': self.communicator.title,
             'expert_expertise': self.communicator.expertise,
             'expert_mandate': self.communicator.mandate,
+            'moderator_name': self.moderator.name,
+            'moderator_title': self.moderator.title,
+            'moderator_expertise': self.moderator.expertise,
+            'moderator_mandate': self.moderator.mandate,
             'panel_name': self.panel_name,
             'panel_description': self.panel_description,
             'panel_goals': self.panel_goals
@@ -68,7 +74,8 @@ class ExpertPanelManager:
         logger.debug(fmted_prompt.content)
 
         # This assumes that the panelist has a work_memory attribute that is a ConversationBufferMemory object
-        self.communicator.work_memory.chat_memory.add_message(fmted_prompt)
+        self.communicator.panel_instructions.append(fmted_prompt)
+        self.communicator.welcome(self.panel_name, self.panel_description, self.panel_goals)
 
         moderator_prompt = SystemMessagePromptTemplate.from_template(moderator_greeting_prompt)
 
@@ -77,14 +84,18 @@ class ExpertPanelManager:
             'expert_title': self.moderator.title,
             'expert_expertise': self.moderator.expertise,
             'expert_mandate': self.moderator.mandate,
+            'communicator_name': self.communicator.name,
+            'communicator_title': self.communicator.title,
+            'communicator_expertise': self.communicator.expertise,
+            'communicator_mandate': self.communicator.mandate,
             'panel_name': self.panel_name,
             'panel_description': self.panel_description,
             'panel_goals': self.panel_goals
         })
         logger.debug(fmted_prompt.content)
 
-        # This assumes that the panelist has a work_memory attribute that is a ConversationBufferMemory object
-        self.moderator.work_memory.chat_memory.add_message(fmted_prompt)
+        self.moderator.panel_instructions.append(fmted_prompt)
+        self.moderator.welcome(self.panel_name, self.panel_description, self.panel_goals)
 
         moderator_expert_prompt = SystemMessagePromptTemplate.from_template(moderator_expert_introduction_prompt)
 
@@ -102,7 +113,7 @@ class ExpertPanelManager:
             logger.debug(fmted_prompt.content)
 
             # This assumes that the panelist has a work_memory attribute that is a ConversationBufferMemory object
-            self.moderator.work_memory.chat_memory.add_message(fmted_prompt)
+            self.moderator.panel_instructions.append(fmted_prompt)
 
 
     def ask_panel(self, user_input):

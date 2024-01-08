@@ -39,7 +39,7 @@ for panelist_description in nerd_panel.panel["panelists"]:
 user_input = "What is the most impressive sci-fi book of the 2020s?"
 
 panel.start_panel(nerd_panel.panel["panel"]["name"], nerd_panel.panel["panel"]["description"], nerd_panel.panel["panel"]["goals"])
-# panel.ask_panel(user_input)
+panel.ask_panel(user_input)
 
 # import logging
 # from src.lib import lib_docdb

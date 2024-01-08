@@ -22,3 +22,4 @@ dist
 *.egg-info/
 documents
 __pycache__
+.langchain.db
