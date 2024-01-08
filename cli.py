@@ -36,7 +36,7 @@ for panelist_description in nerd_panel.panel["panelists"]:
     panelist = botcounsel.Expert(panelist_description["name"], panelist_description["title"], panelist_description["expertise"], panelist_description["mandate"], panel.chat_history)
     panel.add_panelist(panelist)
 
-user_input = "What is the most impressive sci-fi book of the 2020s?"
+user_input = "What specific book written in the 2020s does the panel to be the most impressive? I'm looking for a list of 1-3 specific books."
 
 panel.start_panel(nerd_panel.panel["panel"]["name"], nerd_panel.panel["panel"]["description"], nerd_panel.panel["panel"]["goals"])
 panel.ask_panel(user_input)

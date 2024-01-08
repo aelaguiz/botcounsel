@@ -99,7 +99,7 @@ class ModeratorExpert(MiddlemanExpert):
 
         prompts = []
         
-        for panelist in self.panelists[:1]:
+        for panelist in self.panelists:
             panelist_prompt = SystemMessagePromptTemplate.from_template(moderator_outbound_expert_prompt)
             fmted_panelist_prompt = panelist_prompt.format(**{
                 'communicator_input': communicator_input,
@@ -116,5 +116,6 @@ class ModeratorExpert(MiddlemanExpert):
             prompts
         )
 
-        for res in batch_res[:1]:
+        for panelist, res in zip(self.panelists, batch_res):
+            logger.debug(f"Moderator's prompt to the expert {panelist.name} - {panelist.title}")
             logger.debug(res.content)

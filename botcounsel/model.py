@@ -35,7 +35,8 @@ def init(model_name, api_key, db_connection_string, record_manager_connection_st
         logger.warning("LLM already initialized, skipping")
         return _llm
 
-    _llm = ChatOpenAI(model_name=model_name, temperature=temp, callbacks=[LlmDebugHandler()])
+    _llm = ChatOpenAI(model_name=model_name, temperature=temp, callbacks=[])
+    # _llm = ChatOpenAI(model_name=model_name, temperature=temp, callbacks=[LlmDebugHandler()])
     _embedding = OpenAIEmbeddings(openai_api_key=api_key, timeout=30)
     _db = initialize_db(db_connection_string, record_manager_connection_string)
     set_llm_cache(SQLiteCache(database_path=".langchain.db"))
