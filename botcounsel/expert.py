@@ -1,11 +1,11 @@
 import logging
 
-from .prompts import communicator_user_input_prompt
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from .model import get_llm
 from langchain_core.output_parsers import StrOutputParser
 from .lc_logger import LlmDebugHandler
+from .prompts import moderator_outbound_expert_prompt
 
 logger = logging.getLogger(__name__)
 
@@ -49,26 +49,27 @@ class Expert:
         else:
             return self.summary
 
-    def welcome(self, panel_name, panel_description, panel_goals):
+    def welcome(self, panel_name, panel_description, panel_goals, panel_instructions=[]):
         self.panel_name = panel_name
         self.panel_description = panel_description
         self.panel_goals = panel_goals
+        self.panel_instructions = panel_instructions
 
-class CommunicatorExpert(Expert):
+
+class MiddlemanExpert(Expert):
+    def welcome(self, panel_name, panel_description, panel_goals, inbound_panel_instructions, outbound_panel_instructions):
+        self.panel_name = panel_name
+        self.panel_description = panel_description
+        self.panel_goals = panel_goals
+        self.inbound_panel_instructions = inbound_panel_instructions
+        self.outbound_panel_instructions = outbound_panel_instructions
+
+class CommunicatorExpert(MiddlemanExpert):
     def process_input(self, user_input):
         # Turn the user prompt, chat history and work history and generate a message for the moderator
         logger.debug(f"Communicator received input: {user_input}")
 
         logger.debug(self.work_memory.chat_memory)
-
-        sys_prompt = SystemMessagePromptTemplate.from_template(communicator_user_input_prompt)
-        fmted_sys_prompt = sys_prompt.format(**{
-            'expert_name': self.name,
-            'panel_name': self.panel_name,
-            'panel_goals': self.panel_goals,
-            'chat_history': self.base_chat_memory.chat_memory,
-            'work_history': self.work_memory.chat_memory
-        })
 
         user_prompt = HumanMessagePromptTemplate.from_template("{user_input}")
         fmted_user_prompt = user_prompt.format(**{
@@ -76,29 +77,44 @@ class CommunicatorExpert(Expert):
         })
         llm = get_llm()
 
+        prompts = self.inbound_panel_instructions + [ fmted_user_prompt ]
+
         res = llm.invoke(
-            self.panel_instructions + 
-            [
-                fmted_sys_prompt,
-                fmted_user_prompt
-            ]
+            prompts
         )
         logger.debug(res.content)
 
+        return res.content
 
-
-        # panelist.work_memory.chat_memory.add_message(fmted_prompt)
+class ModeratorExpert(MiddlemanExpert):
+    def __init__(self, name, title, expertise, mandate, base_chat_memory):
+        super().__init__(name, title, expertise, mandate, base_chat_memory)
+        self.panelists = []
         
+    def add_panelist(self, panelist):
+        self.panelists.append(panelist)
 
-        # My work memory is my conversation with the moderator
-        # Prompt I want to assemble:
-        ## Panel isntruction messages
-        ## New user input system message
-        ### History of conversation with user
-        ### History of work with moderator
-        ## User input
+    def process_input(self, communicator_input):
+        logger.debug(f"Moderator received input: {communicator_input}")
 
-        return ""
+        prompts = []
+        
+        for panelist in self.panelists[:1]:
+            panelist_prompt = SystemMessagePromptTemplate.from_template(moderator_outbound_expert_prompt)
+            fmted_panelist_prompt = panelist_prompt.format(**{
+                'communicator_input': communicator_input,
+                'expert_name': panelist.name,
+                'expert_title': panelist.title,
+                'expert_expertise': panelist.expertise,
+                'expert_mandate': panelist.mandate
+            })
+            panelist_prompts = self.inbound_panel_instructions +  self.panel_instructions + [ fmted_panelist_prompt ]
+            prompts.append(panelist_prompts)
 
-class ModeratorExpert(Expert):
-    pass
+        llm = get_llm()
+        batch_res = llm.batch(
+            prompts
+        )
+
+        for res in batch_res[:1]:
+            logger.debug(res.content)
