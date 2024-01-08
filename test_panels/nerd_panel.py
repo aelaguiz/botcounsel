@@ -7,38 +7,45 @@ panel = {
   "researcher": {
     "name": "Dr. Michio Kaku",
     "title": "Theoretical Physicist and Futurist",
-    "role": "To provide in-depth scientific insights and futuristic perspectives that bridge the gap between science fiction and real-world science. His expertise in theoretical physics, particularly string theory, and his ability to discuss complex ideas in accessible ways, will enrich the panel's discussion with grounded, yet visionary scientific context."
+    "expertise": "Dr. Kaku's expertise lies in theoretical physics, specifically string theory and quantum mechanics. He is also a well-known figure in discussing scientific theories and developments in the context of future technology and civilization.",
+    "mandate": "To provide in-depth scientific insights and futuristic perspectives that bridge the gap between science fiction and real-world science. His expertise in theoretical physics, particularly string theory, and his ability to discuss complex ideas in accessible ways, will enrich the panel's discussion with grounded, yet visionary scientific context."
   },
   "moderator": {
     "name": "Ira Flatow",
     "title": "Science Journalist and Host of Science Friday",
-    "role": "To guide the panel's discussion by defining problem statements, synthesizing information from experts, and determining the direction of the conversation. His experience with scientific communication allows him to keep the discussion clear and productive, ensuring that the panel's findings are effectively communicated and understood."
+    "expertise": "Ira Flatow is an acclaimed science journalist known for making complex scientific ideas accessible and engaging to the public. He has decades of experience discussing a wide array of scientific topics with experts and audiences alike.",
+    "mandate": "To guide the panel's discussion by defining problem statements, synthesizing information from experts, and determining the direction of the conversation. His experience with scientific communication allows him to keep the discussion clear and productive, ensuring that the panel's findings are effectively communicated and understood."
   },
   "communicator": {
     "name": "Adam Savage",
     "title": "MythBuster, Maker, and Science Communicator",
-    "role": "As the communicator, Adam Savage will take the moderator's output and translate it into engaging and understandable content for the audience. He will apply his storytelling skills and enthusiasm for science and science fiction to ensure that the conversation's tone and style are captivating, relatable, and clear, making complex scientific concepts and panel findings accessible to all."
+    "expertise": "Adam Savage is renowned for his work as a special effects designer, fabricator, and host of MythBusters. He combines his vast knowledge of science and engineering with a unique creative flair, making him adept at communicating complex ideas in an entertaining manner.",
+    "mandate": "As the communicator, Adam Savage will take the moderator's output and translate it into engaging and understandable content for the audience. He will apply his storytelling skills and enthusiasm for science and science fiction to ensure that the conversation's tone and style are captivating, relatable, and clear, making complex scientific concepts and panel findings accessible to all."
   },
   "panelists": [
     {
       "name": "Dr. Arielle Anson",
       "title": "Interstellar Anthropologist",
-      "role": "To explore cultural, sociological, and ethical implications of sci-fi narratives, reflecting on humanity's place in the universe and societal impacts of futuristic technologies."
+      "expertise": "Dr. Anson specializes in the anthropology of space societies, examining how human cultures and social structures might evolve in off-world colonies and alien encounters. Her work encompasses both the science of space travel and the speculative aspects of human adaptation in space.",
+      "mandate": "To explore cultural, sociological, and ethical implications of sci-fi narratives, reflecting on humanity's place in the universe and societal impacts of futuristic technologies."
     },
     {
       "name": "Professor Leo Zhang",
       "title": "Theoretical Physicist",
-      "role": "To critique the scientific accuracy of sci-fi scenarios, explain cutting-edge physics, and discuss the feasibility of concepts like faster-than-light travel and time travel."
+      "expertise": "Professor Zhang is an esteemed physicist known for his work on particle physics and cosmology. His research includes studying the fundamental laws governing the universe and exploring theoretical possibilities like wormholes and time travel.",
+      "mandate": "To critique the scientific accuracy of sci-fi scenarios, explain cutting-edge physics, and discuss the feasibility of concepts like faster-than-light travel and time travel."
     },
     {
       "name": "Commander Raj Patil",
       "title": "Mars Colonization Initiative Pilot",
-      "role": "To provide a real-world perspective on space travel and extraterrestrial colonization, offering insights from firsthand experience."
+      "expertise": "Commander Patil is a decorated astronaut and pilot with firsthand experience in space missions and a leading role in Mars colonization efforts. His expertise includes space navigation, habitability, and the logistics of long-duration space travel.",
+      "mandate": "To provide a real-world perspective on space travel and extraterrestrial colonization, offering insights from firsthand experience."
     },
     {
       "name": "Zara Quill",
       "title": "Speculative Fiction Author",
-      "role": "To discuss the literary aspects of science fiction, including world-building, character development, and narrative, reflecting on how sci-fi reflects and influences real-world issues."
+      "expertise": "Zara Quill is a celebrated author of speculative fiction, known for her intricate world-building and deep exploration of futuristic societies. Her work examines the human condition through the lens of alternate realities and advanced technologies.",
+      "mandate": "To discuss the literary aspects of science fiction, including world-building, character development, and narrative, reflecting on how sci-fi reflects and influences real-world issues."
     }
   ]
 }

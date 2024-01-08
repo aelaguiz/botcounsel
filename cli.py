@@ -26,14 +26,14 @@ botcounsel.botcounsel_init(openai_model, openai_api_key, temp=openai_temp)
 # moderator = expert.ModeratorExpert("Ira Flatow", chat_history)
 
 panel = botcounsel.ExpertPanelManager()
-communicator = botcounsel.CommunicatorExpert(nerd_panel.panel["communicator"]["name"], nerd_panel.panel["communicator"]["title"], nerd_panel.panel["communicator"]["role"], panel.chat_history)
+communicator = botcounsel.CommunicatorExpert(nerd_panel.panel["communicator"]["name"], nerd_panel.panel["communicator"]["title"], nerd_panel.panel["communicator"]["expertise"], nerd_panel.panel["communicator"]["mandate"], panel.chat_history)
 panel.set_communicator(communicator)
 
-moderator = botcounsel.ModeratorExpert(nerd_panel.panel["moderator"]["name"], nerd_panel.panel["moderator"]["title"], nerd_panel.panel["moderator"]["role"], panel.chat_history)
+moderator = botcounsel.ModeratorExpert(nerd_panel.panel["moderator"]["name"], nerd_panel.panel["moderator"]["title"], nerd_panel.panel["moderator"]["expertise"], nerd_panel.panel["moderator"]["mandate"], panel.chat_history)
 panel.set_moderator(moderator)
 
 for panelist_description in nerd_panel.panel["panelists"]:
-    panelist = botcounsel.Expert(panelist_description["name"], panelist_description["title"], panelist_description["role"], panel.chat_history)
+    panelist = botcounsel.Expert(panelist_description["name"], panelist_description["title"], panelist_description["expertise"], panelist_description["mandate"], panel.chat_history)
     panel.add_panelist(panelist)
 
 user_input = "What is the most impressive sci-fi book of the 2020s?"

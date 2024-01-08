@@ -1,9 +1,10 @@
 from langchain.memory import ConversationBufferMemory
 
 class Expert:
-    def __init__(self, name, title, mandate, base_chat_memory):
+    def __init__(self, name, title, expertise, mandate, base_chat_memory):
         self.name = name
         self.title = title
+        self.expertise = expertise
         self.mandate = mandate
         self.base_chat_memory = base_chat_memory  # Shared BaseChatMemory object for chat history
         self.work_memory = ConversationBufferMemory(input_key="input", output_key="output", return_messages=True)

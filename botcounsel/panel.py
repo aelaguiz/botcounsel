@@ -41,7 +41,8 @@ class ExpertPanelManager:
             intro_info = {
                 'expert_name': panelist.name,
                 'expert_title': panelist.title,
-                'expert_role': panelist.mandate,
+                'expert_expertise': panelist.expertise,
+                'expert_mandate': panelist.mandate,
                 'panel_name': self.panel_name,
                 'panel_description': self.panel_description,
                 'panel_goals': self.panel_goals
@@ -58,7 +59,8 @@ class ExpertPanelManager:
         fmted_prompt = communicator_prompt.format(**{
             'expert_name': self.communicator.name,
             'expert_title': self.communicator.title,
-            'expert_role': self.communicator.mandate,
+            'expert_expertise': self.communicator.expertise,
+            'expert_mandate': self.communicator.mandate,
             'panel_name': self.panel_name,
             'panel_description': self.panel_description,
             'panel_goals': self.panel_goals
@@ -73,7 +75,8 @@ class ExpertPanelManager:
         fmted_prompt = moderator_prompt.format(**{
             'expert_name': self.moderator.name,
             'expert_title': self.moderator.title,
-            'expert_role': self.moderator.mandate,
+            'expert_expertise': self.moderator.expertise,
+            'expert_mandate': self.moderator.mandate,
             'panel_name': self.panel_name,
             'panel_description': self.panel_description,
             'panel_goals': self.panel_goals
@@ -88,9 +91,10 @@ class ExpertPanelManager:
         for panelist in self.panelists:
             fmted_prompt = moderator_expert_prompt.format(**{
                 'moderator_name': self.moderator.name,
-                'expert_name': panelist.name,
-                'expert_title': panelist.title,
-                'expert_role': panelist.mandate,
+                'panelist_name': panelist.name,
+                'panelist_title': panelist.title,
+                'panelist_expertise': panelist.expertise,
+                'panelist_mandate': panelist.mandate,
                 'panel_name': self.panel_name,
                 'panel_description': self.panel_description,
                 'panel_goals': self.panel_goals
