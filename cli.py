@@ -11,6 +11,10 @@ config_path = os.getenv('LOGGING_CONF_PATH')
 
 # Use the configuration file appropriate to the environment
 logging.config.fileConfig(config_path)
+logging.getLogger("httpx").setLevel(logging.CRITICAL)
+logging.getLogger("httpcore.connection").setLevel(logging.CRITICAL)
+logging.getLogger("httpcore.http11").setLevel(logging.CRITICAL)
+logging.getLogger("openai._base_client").setLevel(logging.CRITICAL)
 
 from test_panels import nerd_panel
 import botcounsel
