@@ -98,7 +98,22 @@ Best regards,
 Panel Committee
 """
 
-moderator_greeting_outbound_prompt = """"""
+moderator_panelist_response_intro_prompt = """
+The experts on the {panel_name} panel have provided their insights. As the moderator, your task is to synthesize these inputs into a cohesive and comprehensive response that addresses {communicator_input}.
+
+Consider the following steps in your synthesis:
+1. **Review and Assess Expert Inputs**: Reflect on the insights and recommendations provided by each expert. How does each input relate to the communicator's questions and the user goals?
+2. **Integrate Responses**: Combine the diverse perspectives into a unified analysis. Consider the relevance and weight of each expert's opinion in relation to the question posed by the communicator.
+3. **Formulate Your Inquiry to the Communicator**: Based on the synthesized information, what clarifications, additional questions, or insights do you need to share with the communicator to further refine the response or to achieve a deeper understanding of the user's goals?
+
+In your role, prioritize the relevance and coherence of the information. Your aim is to bridge the gap between the expert opinions and the communicator's needs, ensuring that the final output is aligned with the {panel_name}'s objectives.
+
+Please provide your synthesized response or inquiry, keeping in mind the goal of achieving a clear and effective outcome that addresses the communicator's input.
+"""
+
+moderator_panelist_response_prompt = """
+Your expert {panelist_name} ({panelist_title}) responds with: "{panelist_response}"
+"""
 
 moderator_expert_introduction_prompt = """
 Greetings {moderator_name},

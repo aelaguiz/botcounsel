@@ -2,7 +2,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from .model import get_llm
-from .prompts import expert_greeting_prompt, communicator_greeting_outbound_prompt, communicator_greeting_inbound_prompt, moderator_greeting_inbound_prompt, moderator_greeting_outbound_prompt, moderator_expert_introduction_prompt
+from .prompts import expert_greeting_prompt, communicator_greeting_outbound_prompt, communicator_greeting_inbound_prompt, moderator_greeting_inbound_prompt, moderator_expert_introduction_prompt
 from langchain.memory import ConversationBufferMemory
 from langchain_core.output_parsers import StrOutputParser
 from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
@@ -35,25 +35,10 @@ class ExpertPanelManager:
         Explains the panel to each of the experts
         """
 
-        llm = get_llm()
-        prompt = SystemMessagePromptTemplate.from_template(expert_greeting_prompt)
-
         for panelist in self.panelists:
-            intro_info = {
-                'expert_name': panelist.name,
-                'expert_title': panelist.title,
-                'expert_expertise': panelist.expertise,
-                'expert_mandate': panelist.mandate,
-                'panel_name': self.panel_name,
-                'panel_description': self.panel_description,
-                'panel_goals': self.panel_goals
-            }
-            fmted_prompt = prompt.format(**intro_info)
-            logger.debug(fmted_prompt.content)
+            panelist.welcome(self.panel_name, self.panel_description, self.panel_goals)
 
-            panelist.welcome(self.panel_name, self.panel_description, self.panel_goals, [fmted_prompt])
-
-        
+       
         inbound_communicator_prompt = SystemMessagePromptTemplate.from_template(communicator_greeting_inbound_prompt)
 
         inbound_fmted_prompt = inbound_communicator_prompt.format(**{
@@ -90,59 +75,8 @@ class ExpertPanelManager:
         # This assumes that the panelist has a work_memory attribute that is a ConversationBufferMemory object
         self.communicator.welcome(self.panel_name, self.panel_description, self.panel_goals, [inbound_fmted_prompt], [outbound_fmted_prompt])
 
-        inbound_moderator_prompt = SystemMessagePromptTemplate.from_template(moderator_greeting_inbound_prompt)
+        self.moderator.welcome(self.panel_name, self.panel_description, self.panel_goals, self.communicator.name, self.communicator.title, self.communicator.expertise, self.communicator.mandate)
 
-        inbound_fmted_prompt = inbound_moderator_prompt.format(**{
-            'expert_name': self.moderator.name,
-            'expert_title': self.moderator.title,
-            'expert_expertise': self.moderator.expertise,
-            'expert_mandate': self.moderator.mandate,
-            'communicator_name': self.communicator.name,
-            'communicator_title': self.communicator.title,
-            'communicator_expertise': self.communicator.expertise,
-            'communicator_mandate': self.communicator.mandate,
-            'panel_name': self.panel_name,
-            'panel_description': self.panel_description,
-            'panel_goals': self.panel_goals
-        })
-        logger.debug(inbound_fmted_prompt.content)
-
-        outbound_moderator_prompt = SystemMessagePromptTemplate.from_template(moderator_greeting_outbound_prompt)
-
-        outbound_fmted_prompt = outbound_moderator_prompt.format(**{
-            'expert_name': self.moderator.name,
-            'expert_title': self.moderator.title,
-            'expert_expertise': self.moderator.expertise,
-            'expert_mandate': self.moderator.mandate,
-            'communicator_name': self.communicator.name,
-            'communicator_title': self.communicator.title,
-            'communicator_expertise': self.communicator.expertise,
-            'communicator_mandate': self.communicator.mandate,
-            'panel_name': self.panel_name,
-            'panel_description': self.panel_description,
-            'panel_goals': self.panel_goals
-        })
-        logger.debug(outbound_fmted_prompt.content)
-
-        self.moderator.welcome(self.panel_name, self.panel_description, self.panel_goals, [inbound_fmted_prompt], [outbound_fmted_prompt])
-
-        moderator_expert_prompt = SystemMessagePromptTemplate.from_template(moderator_expert_introduction_prompt)
-
-        for panelist in self.panelists:
-            fmted_prompt = moderator_expert_prompt.format(**{
-                'moderator_name': self.moderator.name,
-                'panelist_name': panelist.name,
-                'panelist_title': panelist.title,
-                'panelist_expertise': panelist.expertise,
-                'panelist_mandate': panelist.mandate,
-                'panel_name': self.panel_name,
-                'panel_description': self.panel_description,
-                'panel_goals': self.panel_goals
-            })
-            logger.debug(fmted_prompt.content)
-
-            # This assumes that the panelist has a work_memory attribute that is a ConversationBufferMemory object
-            self.moderator.panel_instructions.append(fmted_prompt)
 
 
     def ask_panel(self, user_input):

@@ -66,16 +66,16 @@ def initialize_db(db_connection_string, record_manager_connection_string, db_col
     if _db:
         raise Exception("DB already initialized")
 
-    # _db = PGVector(
-    #     embedding_function=get_embedding_fn(),
-    #     collection_name=db_collection_name,
-    #     connection_string=db_connection_string
-    # )
+    _db = PGVector(
+        embedding_function=get_embedding_fn(),
+        collection_name=db_collection_name,
+        connection_string=db_connection_string
+    )
 
-    # namespace = f"pgvector/{db_collection_name}"
-    # _record_manager = SQLRecordManager(namespace, db_url=record_manager_connection_string)
+    namespace = f"pgvector/{db_collection_name}"
+    _record_manager = SQLRecordManager(namespace, db_url=record_manager_connection_string)
 
-    # _record_manager.create_schema()
+    _record_manager.create_schema()
 
     return _db
 
