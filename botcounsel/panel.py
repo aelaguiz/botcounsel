@@ -98,3 +98,7 @@ class ExpertPanelManager:
         moderator_output = self.moderator.process_input(communicator_output)
 
         logger.debug(f"Moderator output: {moderator_output}")
+
+        communicator_user_output = self.communicator.process_output(moderator_output)
+
+        logger.debug(f"Communicator user output: {communicator_user_output}")

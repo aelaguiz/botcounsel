@@ -101,7 +101,7 @@ class CommunicatorExpert(MiddlemanExpert):
         # Turn the user prompt, chat history and work history and generate a message for the moderator
         logger.debug(f"Communicator received input: {user_input}")
 
-        user_prompt = SystemMessagePromptTemplate.from_template("{user_input}")
+        user_prompt = SystemMessagePromptTemplate.from_template("User said: {user_input}")
         fmted_user_prompt = user_prompt.format(**{
             'user_input': user_input
         })
@@ -114,13 +114,54 @@ class CommunicatorExpert(MiddlemanExpert):
         )
         logger.debug(res.content)
 
+        # if not self.message_history.messages:
+        #     for p in self.inbound_panel_instructions:
+        #         self.message_history.add_message(p)
+
+        self.message_history.add_message(fmted_user_prompt)
+
+        return res.content
+
+    def process_output(self, moderator_output):
+        logger.debug(f"Communicator received moderator output: {moderator_output}")
+
+        user_prompt = SystemMessagePromptTemplate.from_template("{moderator_output}")
+        fmted_user_prompt = user_prompt.format(**{
+            'moderator_output': moderator_output
+        })
+        llm = get_llm()
+
+        prompts = [m for m in self.message_history.messages] + self.outbound_panel_instructions + [ fmted_user_prompt ]
+
+        print("MESSAGE HISTORY MESSAGES")
+        for m in self.message_history.messages:
+            print("\n\n------------------------------")
+            print(m)
+            print(type(m))
+
+        print("COMBINED PROMPTS")
+        for p in prompts:
+            print("\n\n------------------------------")
+            print(p)
+        # for p in self.message_history.messages:
+        #     logger.debug(p)
+        print(type(self.message_history.messages))
+        # print(type(self.outbound_panel_instructions))
+        # print(self.message_history.messages)
+        # print(self.outbound_panel_instructions)
+        print(prompts)
+
+        res = llm.invoke(
+            prompts
+        )
+        logger.debug(res.content)
+
         return res.content
 
 class ModeratorExpert(MiddlemanExpert):
     def __init__(self, name, title, expertise, mandate, base_chat_memory):
         super().__init__(name, title, expertise, mandate, base_chat_memory)
         self.panelists = []
-        self.message_history = ChatMessageHistory()
         
     def add_panelist(self, panelist):
         self.panelists.append(panelist)
